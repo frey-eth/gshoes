@@ -7,7 +7,7 @@ const CartItem = ({ data }) => {
   const [countItem, setCountItem] = useState(1);
   useEffect(() => {
     updateItemCount(itemData.id, countItem);
-    if (countItem === 0) {
+    if (countItem === 0 || countItem <= 0) {
       removeFromCart(itemData.id);
     }
   }, [countItem]);
