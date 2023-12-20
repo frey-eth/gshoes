@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { motion, useAnimation } from "framer-motion";
+import { motion } from "framer-motion";
 
 const CartItem = ({ data }) => {
   const itemData = data;
@@ -7,7 +7,7 @@ const CartItem = ({ data }) => {
   const [countItem, setCountItem] = useState(1);
   useEffect(() => {
     updateItemCount(itemData.id, countItem);
-    if (countItem == 0) {
+    if (countItem === 0) {
       removeFromCart(itemData.id);
     }
   }, [countItem]);

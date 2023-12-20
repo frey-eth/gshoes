@@ -6,10 +6,10 @@ import ProductCard from "./components/ProductCard";
 function App() {
   const jsonDataPath = "shoes.json";
   const [productData, setProductData] = useState([]);
-  const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [cart, setCart] = useState([]);
   const localStorageCart = JSON.parse(localStorage.getItem("cart")) || [];
-  
+
   useEffect(() => {
     fetch(jsonDataPath)
       .then((response) => {
@@ -29,14 +29,15 @@ function App() {
   }, []);
 
   useEffect(() => {
-    setCart((prevCart) => {
-      let total = 0;
-      for (let i = 0; i < prevCart?.length; i++) {
-        total += prevCart[i].price * prevCart[i].count;
-      }
-      setTotalPrice(total.toFixed(2));
-      return localStorageCart;
-    });
+    let total = 0;
+    for (let i = 0; i < localStorageCart?.length; i++) {
+      total += localStorageCart[i].price * localStorageCart[i].count;
+    }
+    setTotalPrice(total.toFixed(2));
+  }, [localStorageCart]);
+
+  useEffect(() => {
+    setCart(JSON.parse(localStorage.getItem("cart")) || []);
   }, [localStorageCart]);
 
   return (
@@ -54,7 +55,7 @@ function App() {
           <div className="card-title my-2">Our Products</div>
           <div className="card-body d-flex justify-content-center flex-wrap overflow-hidden overflow-y-scroll position-relative">
             {productData?.map((item, idx) => (
-              <ProductCard data={item} key={idx} />
+              <ProductCard cart={cart} data={item} key={idx} />
             ))}
           </div>
         </div>
@@ -72,8 +73,8 @@ function App() {
           </div>
           <div className="card-body d-flex justify-content-center flex-wrap overflow-y-scroll position-relative">
             <div className="d-block">
-              {cart?.length > 0 ? (
-                cart?.map((item, idx) => <CartItem data={item} key={idx} />)
+              {localStorageCart?.length > 0 ? (
+                localStorageCart?.map((item, idx) => <CartItem data={item} key={idx} />)
               ) : (
                 <p className="text">Your cart is empty</p>
               )}

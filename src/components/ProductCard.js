@@ -2,22 +2,21 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaCheck } from "react-icons/fa";
 
-const ProductCard = ({ data }) => {
+const ProductCard = ({ data, cart }) => {
   const itemData = { ...data, count: 1 };
-  const [cart, setCart] = useState([]);
   const [isInCart, setIsInCart] = useState(false);
+
   useEffect(() => {
-    setCart(JSON.parse(localStorage.getItem("cart")));
     const isItemInCart = cart.some((item) => item.id === itemData.id);
     setIsInCart(isItemInCart);
-  }, [cart]);
+  }, [itemData.id, cart]);
 
   const addToCart = () => {
-    const existingCartItems = JSON.parse(localStorage.getItem("cart")) || [];
-    const updatedCart = [...existingCartItems, itemData];
+    const updatedCart = [...cart, itemData];
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     setIsInCart(true);
   };
+
   return (
     <div className="product-card flex-column py-4">
       <div
